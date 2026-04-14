@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";npm install lucide-react@latest
+
+
+@theme {
+    --color-primary: #003847;
+    --color-secondary:#546E7A;
+    --color-tertiary:#4D2A0C;
+    --color-neutral:#F5F7F8;
+}
