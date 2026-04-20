@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useState } from "react";
+import { signupUser } from "../Services/authService";
 import { X, Mail, Lock, Loader2, User} from 'lucide-react';
 interface AuthModalProps {
     mode: 'login' | 'signup'
@@ -32,7 +33,18 @@ export default function AuthModal({ mode } : AuthModalProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setIsLoading(true)
+        setIsLoading(true)  
+
+        const result = await signupUser(formData)
+
+        if(!result.success) {
+            console.error("signup failed:", result.fullError)
+            setIsLoading(false)
+            return
+        }
+
+        console.log('signup success!', result?.fullData)
+        setIsLoading(false)
     }
     
     return (
@@ -83,7 +95,7 @@ export default function AuthModal({ mode } : AuthModalProps) {
                         <div className="relative flex justify-center text-xs uppercase"><span className="bg-white px-2 text-slate-500">Or continue with</span></div>
                     </div>
                     
-                    <form onSubmit={handleSubmit} className="space-y-4 text-secondary">
+                    <form onSubmit={handleSubmit} className="space-y-4 text-black">
                         {mode === 'signup' && (
                             <div className="space-y-1.5">
                                 <label className="text-sm font-medium text-slate-700">
@@ -138,7 +150,7 @@ export default function AuthModal({ mode } : AuthModalProps) {
                                     minLength={8}
                                     pattern="(?=.*\d)(?=.*[a-z]).{8,}"
                                     className="w-full rounded-lg border text-secondary border-slate-200 py-2  pl-10 pr-4 outline-none transiton-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
-                                    required
+                                    // required
                                     />
                             </div>
                         </div>
